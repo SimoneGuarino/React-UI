@@ -6,7 +6,7 @@ interface DynamicStyledProps {
   slot: string;
 }
 
-const generateDynamicStyled = ({ component, name, slot }: DynamicStyledProps) => {
+export const generateDynamicStyled = ({ component, name, slot }: DynamicStyledProps) => {
   // Definisci il tipo delle proprietà per includere 'children'
   interface DynamicStyledComponentProps {
     children?: React.ReactNode;
@@ -27,5 +27,3 @@ const generateDynamicStyled = ({ component, name, slot }: DynamicStyledProps) =>
   name: 'SUN-UI-surface',
   slot: 'Root1',
 });*/
-
-export { generateDynamicStyled };
