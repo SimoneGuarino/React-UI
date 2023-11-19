@@ -4,5 +4,6 @@ export const Surface = generateDynamicStyled({
   component: 'div',
   name: 'my-div',
   slot: 'my-slot',
-  style: { color: 'yellow', fontSize: '16px' }
+  style: { background: '#fff', fontSize: '16px' },
+  additionalStyle: ({ ownerState }) => ({ padding: ownerState.elevation }),
 });

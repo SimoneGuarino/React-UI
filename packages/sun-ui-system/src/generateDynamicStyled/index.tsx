@@ -1,26 +1,35 @@
 import React from 'react';
-import styled from '@emotion/styled';
+
+/**
+ * @param children what is inside of tags
+ * @param sx in input the style of elements in addition to the style
+ */
+export interface DynamicStyledComponentProps {
+  children?: React.ReactNode;
+  sx?: React.CSSProperties;
+  [key: string]: any;
+}
 
 interface DynamicStyledProps {
   component: keyof JSX.IntrinsicElements;
   name: string;
   slot: string;
-  style?: React.CSSProperties; // Aggiungi la prop 'style'
+  style?: React.CSSProperties;
+  additionalStyle?: (props: { ownerState: any }) => React.CSSProperties;
 }
 
-export const generateDynamicStyled = ({ component, name, slot, style }: DynamicStyledProps) => {
-  // Definisci il tipo delle proprietà per includere 'children'
-  interface DynamicStyledComponentProps {
-    children?: React.ReactNode;
-    sx?: React.CSSProperties; // Dichiarare 'style' come opzionale anche qui
-  }
-
+export const generateDynamicStyled: (
+  props: DynamicStyledProps
+) => React.FC<DynamicStyledComponentProps> = ({ component, name, slot, style, additionalStyle }) => {
   const DynamicStyledComponent: React.FC<DynamicStyledComponentProps> = ({ children, ...props }) => {
-    // Usa le variabili component, name, slot come necessario
     const CustomComponent = component as keyof JSX.IntrinsicElements;
 
-    // Combina gli stili in linea con gli eventuali stili passati come prop
     const combinedStyles: React.CSSProperties = { ...style, ...props.sx };
+
+    if (additionalStyle) {
+      const additionalStyles = additionalStyle({ ownerState: props });
+      Object.assign(combinedStyles, additionalStyles);
+    }
 
     return React.createElement(CustomComponent, { name, slot, style: combinedStyles, ...props }, children);
   };

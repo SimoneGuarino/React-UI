@@ -1,14 +1,17 @@
-// dist/generateDynamicStyled/index.d.ts
-
+import React from 'react';
+export interface DynamicStyledComponentProps {
+    children?: React.ReactNode;
+    sx?: React.CSSProperties;
+    [key: string]: any;
+}
 interface DynamicStyledProps {
-  component: string;
-  name: string;
-  slot: string;
-  style?: React.CSSProperties; // Aggiungi la prop 'style'
+    component: keyof JSX.IntrinsicElements;
+    name: string;
+    slot: string;
+    style?: React.CSSProperties;
+    additionalStyle?: (props: {
+        ownerState: any;
+    }) => React.CSSProperties;
 }
-
-interface DynamicStyledComponentProps {
-  children?: React.ReactNode;
-}
-
-export const generateDynamicStyled: ({ component, name, slot, style }: DynamicStyledProps) => React.FC<DynamicStyledComponentProps>;
+export declare const generateDynamicStyled: (props: DynamicStyledProps) => React.FC<DynamicStyledComponentProps>;
+export {};

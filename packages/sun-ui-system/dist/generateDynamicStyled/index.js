@@ -16,13 +16,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateDynamicStyled = void 0;
 const react_1 = __importDefault(require("react"));
-const generateDynamicStyled = ({ component, name, slot, style }) => {
+const generateDynamicStyled = ({ component, name, slot, style, additionalStyle }) => {
     const DynamicStyledComponent = (_a) => {
         var { children } = _a, props = __rest(_a, ["children"]);
-        // Usa le variabili component, name, slot come necessario
         const CustomComponent = component;
-        // Combina gli stili in linea con gli eventuali stili passati come prop
         const combinedStyles = Object.assign(Object.assign({}, style), props.sx);
+        if (additionalStyle) {
+            const additionalStyles = additionalStyle({ ownerState: props });
+            Object.assign(combinedStyles, additionalStyles);
+        }
         return react_1.default.createElement(CustomComponent, Object.assign({ name, slot, style: combinedStyles }, props), children);
     };
     return DynamicStyledComponent;

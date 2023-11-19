@@ -10,7 +10,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <Surface sx={{color: 'red'}}>
+        <Surface sx={{color: 'red', '&:hover':{color: '#000'}}} elevation={5}>
           Ciao come stai??
         </Surface>
       </header>
