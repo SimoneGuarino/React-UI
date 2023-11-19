@@ -1,11 +1,30 @@
 "use strict";
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = require("react");
-exports.generateDynamicStyled = function (_a) {
-    const component = _a.component, name = _a.name, slot = _a.slot;
-    const DynamicStyledComponent = function (props) {
+exports.generateDynamicStyled = void 0;
+const react_1 = __importDefault(require("react"));
+const generateDynamicStyled = ({ component, name, slot, style }) => {
+    const DynamicStyledComponent = (_a) => {
+        var { children } = _a, props = __rest(_a, ["children"]);
+        // Usa le variabili component, name, slot come necessario
         const CustomComponent = component;
-        return react_1.createElement(CustomComponent, { name: name, slot: slot, ...props }, props.children);
+        // Combina gli stili in linea con gli eventuali stili passati come prop
+        const combinedStyles = Object.assign(Object.assign({}, style), props.sx);
+        return react_1.default.createElement(CustomComponent, Object.assign({ name, slot, style: combinedStyles }, props), children);
     };
     return DynamicStyledComponent;
 };
+exports.generateDynamicStyled = generateDynamicStyled;

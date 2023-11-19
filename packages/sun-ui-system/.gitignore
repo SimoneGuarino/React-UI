@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+#soruce files
+/src
+
 # production
 /build
 

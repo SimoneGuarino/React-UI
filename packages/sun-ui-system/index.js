@@ -1,1 +1,1 @@
-export { generateDynamicStyled } from './src/generateDynamicStyled';
+export { generateDynamicStyled } from './dist/generateDynamicStyled';

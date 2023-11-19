@@ -21,9 +21,6 @@
     "url": "git+https://github.com/SimoneGuarino/-sun-ui-system.git",
     "directory": "packages/sun-ui-system"
   },
-  "dependencies": {
-
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -49,11 +46,12 @@
     ]
   },
   "devDependencies": {
-    "react": "^18.2.0",
     "@types/node": "^20.9.1",
+    "react": "^18.2.0",
     "typescript": "^5.2.2"
   },
   "peerDependencies": {
+    "@emotion/styled": "^11.11.0",
     "@types/react": "^17.0.0 || ^18.0.0",
     "react": "^17.0.0 || ^18.0.0"
   },
