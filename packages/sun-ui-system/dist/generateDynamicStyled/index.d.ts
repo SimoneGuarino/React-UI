@@ -1,5 +1,4 @@
 // dist/generateDynamicStyled/index.d.ts
-import React from 'react';
 
 interface DynamicStyledProps {
   component: string;
