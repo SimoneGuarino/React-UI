@@ -7,5 +7,5 @@ exports.Surface = (0, generateDynamicStyled_1.generateDynamicStyled)({
     name: 'sun-ui-surface',
     slot: 'sun-ui-surface',
     sx: { fontSize: '16px', color: 'black' },
-    additionalStyle: ({ ownerState }) => ({ padding: (ownerState.elevation || 0) }),
+    additionalStyle: ({ ownerState }) => ({ padding: ownerState.elevation }),
 });

@@ -31,15 +31,23 @@ const generateDynamicStyled = ({ component, name, slot, sx, additionalStyle }) =
             Object.assign(combinedStyles, additionalStyles);
         }
         const [randomClassName, setRandomClassName] = react_1.default.useState(() => generateRandomClassName(name));
-        const [copyTest, setCopyTest] = react_1.default.useState();
-        if (JSON.stringify(copyTest) !== JSON.stringify(Object.assign({}, props.sx))) {
-            setCopyTest(() => { return Object.assign({}, props.sx); });
-            console.log(JSON.stringify(copyTest) !== JSON.stringify(Object.assign({}, props.sx)));
+        const [detectChange, setDetectChange] = react_1.default.useState();
+        //create a class when the props.sx change
+        if (JSON.stringify(detectChange) !== JSON.stringify(Object.assign({}, props.sx))) {
+            setDetectChange(props.sx);
             if (props.sx)
                 (0, makeStyle_1.makeStyle)({ className: randomClassName, style: Object.assign(Object.assign({}, sx), props.sx) });
         }
         return react_1.default.createElement(CustomComponent, Object.assign({ name,
             slot, style: combinedStyles, className: randomClassName }, props), children);
+        /*return jsx(CustomComponent, {
+          name,
+          slot,
+          css: css`${{...sx, ...props.sx, }}`,
+          //style: combinedStyles,
+          //className: randomClassName, // Assign the random class name here
+          ...props
+        }, children);*/
     };
     return DynamicStyledComponent;
 };

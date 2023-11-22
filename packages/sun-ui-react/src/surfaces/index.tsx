@@ -4,6 +4,6 @@ export const Surface = generateDynamicStyled({
   component: 'div',
   name: 'sun-ui-surface',
   slot: 'sun-ui-surface',
-  style: { fontSize: '16px', color: 'black' },
+  sx: { fontSize: '16px', color: 'black' },
   additionalStyle: ({ ownerState }) => ({ padding: ownerState.elevation }),
 });

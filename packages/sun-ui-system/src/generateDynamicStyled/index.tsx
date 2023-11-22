@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyle } from '../makeStyle';
+//import { jsx, css } from '@emotion/react'
 /**
  * @param children what is inside of tags
  * @param sx in input the style of elements in addition to the style
@@ -38,12 +39,11 @@ export const generateDynamicStyled: (
     }
 
     const [randomClassName, setRandomClassName] = React.useState<string>(() => generateRandomClassName(name));
-    const [copyTest, setCopyTest] = React.useState<React.CSSProperties>();
+    const [detectChange, setDetectChange] = React.useState<React.CSSProperties>();
 
-    if(JSON.stringify(copyTest) !== JSON.stringify({...props.sx})){
-      setCopyTest(() => {return {...props.sx}});
-      console.log(JSON.stringify(copyTest) !== JSON.stringify({...props.sx}))
-
+    //create a class when the props.sx change
+    if(JSON.stringify(detectChange) !== JSON.stringify({...props.sx})){
+      setDetectChange(props.sx)
       if(props.sx) makeStyle({ className: randomClassName, style: {...sx, ...props.sx, } });
     }
 
@@ -53,7 +53,16 @@ export const generateDynamicStyled: (
       style: combinedStyles,
       className: randomClassName, // Assign the random class name here
       ...props
-    }, children);  
+    }, children);
+
+    /*return jsx(CustomComponent, {
+      name,
+      slot,
+      css: css`${{...sx, ...props.sx, }}`,
+      //style: combinedStyles,
+      //className: randomClassName, // Assign the random class name here
+      ...props
+    }, children);*/  
   };
 
   return DynamicStyledComponent;

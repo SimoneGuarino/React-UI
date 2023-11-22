@@ -37,18 +37,17 @@ const makeStyle = ({ className, style }) => {
         document.head.appendChild(styleTag); // Aggiungi il tag style al head
     }
     if (styleTag.textContent != undefined) {
-        console.log(styleTag.textContent);
-        if (!styleTag.textContent.includes(className)) {
-            const styleConverted = (0, exports.composeStyle)({ style: style, className: className });
-            // Aggiungi le regole CSS dinamiche alla classe
-            const dynamicStyle = `
+        //if(!styleTag.textContent.includes(className)){
+        const styleConverted = (0, exports.composeStyle)({ style: style, className: className });
+        // Aggiungi le regole CSS dinamiche alla classe
+        const dynamicStyle = `
         .${className} {
           ${styleConverted}
         }
       `;
-            // Aggiungi la classe al tag style
-            styleTag.textContent += dynamicStyle;
-        }
+        // Aggiungi la classe al tag style
+        styleTag.textContent += dynamicStyle;
+        //}
     }
     return true;
 };

@@ -11,10 +11,22 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <Surface sx={{backgroundColor: 'red', color:'#fff', '&:hover':{ backgroundColor: 'green', color: '#fff'} }} 
+        <Surface sx={
+          {
+            padding: "32px",
+            backgroundColor: "hotpink",
+            fontSize: "24px",
+            borderRadius: "4px",
+            color: "black",
+            fontWeight: "bold",
+            "&:hover": {
+              color: "white",
+            }
+          }
+        } 
           //elevation={5}
         >
-          Ciao come stai??
+          Ciao come stai?
         </Surface>
       </header>
     </div>
