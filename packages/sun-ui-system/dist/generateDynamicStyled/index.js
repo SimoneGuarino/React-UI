@@ -16,32 +16,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateDynamicStyled = void 0;
 const react_1 = __importDefault(require("react"));
-const react_2 = require("@emotion/react");
+const makeStyle_1 = require("../makeStyle");
 const generateRandomClassName = (name) => {
     const randomString = Math.random().toString(36).substring(2, 8);
     return `css-${randomString}-${name}`;
 };
-const generateDynamicStyled = ({ component, name, slot, style, additionalStyle }) => {
+const generateDynamicStyled = ({ component, name, slot, sx, additionalStyle }) => {
     const DynamicStyledComponent = (_a) => {
         var { children } = _a, props = __rest(_a, ["children"]);
         const CustomComponent = component;
-        const combinedStyles = Object.assign(Object.assign({}, style), props.sx);
+        const combinedStyles = Object.assign({}, props.style); // ...props.sx
         if (additionalStyle) {
             const additionalStyles = additionalStyle({ ownerState: props });
             Object.assign(combinedStyles, additionalStyles);
         }
         const [randomClassName, setRandomClassName] = react_1.default.useState(() => generateRandomClassName(name));
-        const baseStyles = (0, react_2.css) `
-      background-color: red;
-      color: white;
-      padding: 16px;
-
-      &:hover {
-        background-color: darkred;
-      }
-    `;
-        const additionalStylesEmotion = additionalStyle ? additionalStyle({ ownerState: props }) : null;
-        return (react_1.default.createElement(CustomComponent, Object.assign({ name: name, slot: slot, style: combinedStyles, className: randomClassName, css: [baseStyles, additionalStylesEmotion] }, props), children));
+        const [copyTest, setCopyTest] = react_1.default.useState();
+        if (JSON.stringify(copyTest) !== JSON.stringify(Object.assign({}, props.sx))) {
+            setCopyTest(() => { return Object.assign({}, props.sx); });
+            console.log(JSON.stringify(copyTest) !== JSON.stringify(Object.assign({}, props.sx)));
+            if (props.sx)
+                (0, makeStyle_1.makeStyle)({ className: randomClassName, style: Object.assign(Object.assign({}, sx), props.sx) });
+        }
+        return react_1.default.createElement(CustomComponent, Object.assign({ name,
+            slot, style: combinedStyles, className: randomClassName }, props), children);
     };
     return DynamicStyledComponent;
 };

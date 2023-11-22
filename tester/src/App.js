@@ -11,9 +11,8 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <Surface onHoverStyle={{ backgroundColor: 'red' }} 
-          sx={{'&:hover':{ backgroundColor: 'red'} }} 
-          elevation={5}
+        <Surface sx={{backgroundColor: 'red', color:'#fff', '&:hover':{ backgroundColor: 'green', color: '#fff'} }} 
+          //elevation={5}
         >
           Ciao come stai??
         </Surface>
