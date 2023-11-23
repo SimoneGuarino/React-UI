@@ -11,20 +11,8 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <Surface sx={
-          {
-            padding: "32px",
-            backgroundColor: "hotpink",
-            fontSize: "24px",
-            borderRadius: "4px",
-            color: "black",
-            fontWeight: "bold",
-            "&:hover": {
-              color: "white",
-            }
-          }
-        } 
-          //elevation={5}
+        <Surface 
+          elevation={5}
         >
           Ciao come stai?
         </Surface>

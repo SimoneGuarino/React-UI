@@ -1,14 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GenerateActionsClass = void 0;
+const findRules_1 = require("./findRules");
 const GenerateActionsClass = ({ objToTransform, className }) => {
-    const styleId = '@sun-ui/Style';
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-        styleTag = document.createElement('style');
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-    }
+    const styleSheet = document.styleSheets[0]; // Sostituisci con l'oggetto CSSStyleSheet a cui desideri aggiungere o modificare la regola :hover
     for (const keyMainObject in objToTransform) {
         if (objToTransform.hasOwnProperty(keyMainObject)) {
             const styles = objToTransform[keyMainObject];
@@ -24,7 +19,12 @@ const GenerateActionsClass = ({ objToTransform, className }) => {
                             ${styleToString}
                         }
                     `;
-                styleTag.textContent += dynamicStyle;
+                const existingRuleIndex = (0, findRules_1.findRuleIndexBySelector)(styleSheet, `.${className}`);
+                if (existingRuleIndex !== -1) {
+                    // Sovrascrivi i valori della regola esistente
+                    styleSheet.deleteRule(existingRuleIndex);
+                }
+                styleSheet.insertRule(dynamicStyle, styleSheet.cssRules.length);
             }
             else {
                 console.error(`Tipo inaspettato per le proprietà di stile di ${keyMainObject}`);

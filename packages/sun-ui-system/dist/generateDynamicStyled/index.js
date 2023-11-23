@@ -26,28 +26,24 @@ const generateDynamicStyled = ({ component, name, slot, sx, additionalStyle }) =
         var { children } = _a, props = __rest(_a, ["children"]);
         const CustomComponent = component;
         const combinedStyles = Object.assign({}, props.style); // ...props.sx
+        const combinedSxStyles = Object.assign({}, sx); // ...props.sx
         if (additionalStyle) {
             const additionalStyles = additionalStyle({ ownerState: props });
-            Object.assign(combinedStyles, additionalStyles);
+            Object.assign(combinedSxStyles, additionalStyles);
+        }
+        if (props.sx) {
+            Object.assign(combinedSxStyles, props.sx);
         }
         const [randomClassName, setRandomClassName] = react_1.default.useState(() => generateRandomClassName(name));
-        const [detectChange, setDetectChange] = react_1.default.useState();
+        const detectChange = react_1.default.useRef();
         //create a class when the props.sx change
-        if (JSON.stringify(detectChange) !== JSON.stringify(Object.assign({}, props.sx))) {
-            setDetectChange(props.sx);
-            if (props.sx)
-                (0, makeStyle_1.makeStyle)({ className: randomClassName, style: Object.assign(Object.assign({}, sx), props.sx) });
+        if (JSON.stringify(detectChange.current) !== JSON.stringify(combinedSxStyles)) {
+            detectChange.current = combinedSxStyles;
+            (0, makeStyle_1.makeStyle)({ className: randomClassName, style: Object.assign({}, combinedSxStyles) });
         }
+        ;
         return react_1.default.createElement(CustomComponent, Object.assign({ name,
             slot, style: combinedStyles, className: randomClassName }, props), children);
-        /*return jsx(CustomComponent, {
-          name,
-          slot,
-          css: css`${{...sx, ...props.sx, }}`,
-          //style: combinedStyles,
-          //className: randomClassName, // Assign the random class name here
-          ...props
-        }, children);*/
     };
     return DynamicStyledComponent;
 };

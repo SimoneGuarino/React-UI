@@ -6,6 +6,7 @@ export interface DynamicStyledComponentProps {
 export interface ComposeStyleProps {
     style: React.CSSProperties;
     className: string;
+    styleSheet: CSSStyleSheet;
 }
 export declare const composeStyle: React.FC<ComposeStyleProps>;
 export declare const makeStyle: React.FC<DynamicStyledComponentProps>;

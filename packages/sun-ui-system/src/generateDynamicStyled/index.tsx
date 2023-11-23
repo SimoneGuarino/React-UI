@@ -32,20 +32,25 @@ export const generateDynamicStyled: (
     const CustomComponent = component as keyof JSX.IntrinsicElements;
 
     const combinedStyles: React.CSSProperties = { ...props.style }; // ...props.sx
+    const combinedSxStyles : React.CSSProperties = { ...sx }; // ...props.sx
 
     if (additionalStyle) {
       const additionalStyles = additionalStyle({ ownerState: props });
-      Object.assign(combinedStyles, additionalStyles);
+      Object.assign(combinedSxStyles, additionalStyles);
+    }
+    if(props.sx){
+      Object.assign(combinedSxStyles, props.sx);
     }
 
     const [randomClassName, setRandomClassName] = React.useState<string>(() => generateRandomClassName(name));
-    const [detectChange, setDetectChange] = React.useState<React.CSSProperties>();
+    const detectChange = React.useRef<object>();
 
     //create a class when the props.sx change
-    if(JSON.stringify(detectChange) !== JSON.stringify({...props.sx})){
-      setDetectChange(props.sx)
-      if(props.sx) makeStyle({ className: randomClassName, style: {...sx, ...props.sx, } });
-    }
+    if(JSON.stringify(detectChange.current) !== JSON.stringify(combinedSxStyles)){
+      detectChange.current = combinedSxStyles;
+
+      makeStyle({ className: randomClassName, style: {...combinedSxStyles} });
+    };
 
     return React.createElement(CustomComponent, {
       name,
@@ -55,14 +60,6 @@ export const generateDynamicStyled: (
       ...props
     }, children);
 
-    /*return jsx(CustomComponent, {
-      name,
-      slot,
-      css: css`${{...sx, ...props.sx, }}`,
-      //style: combinedStyles,
-      //className: randomClassName, // Assign the random class name here
-      ...props
-    }, children);*/  
   };
 
   return DynamicStyledComponent;
