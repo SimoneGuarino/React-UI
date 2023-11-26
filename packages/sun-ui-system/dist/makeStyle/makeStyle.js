@@ -56,9 +56,8 @@ const makeStyle = ({ className, style }) => {
             styleSheet.deleteRule(existingRuleIndex);
         }
         // ruleIndex is the index of the new rule in the style sheet
-        const ruleIndex = styleSheet.insertRule(dynamicStyle, styleSheet.cssRules.length);
+        styleSheet.insertRule(dynamicStyle, styleSheet.cssRules.length);
     }
-    console.log(document.styleSheets[0].cssRules);
     return true;
 };
 exports.makeStyle = makeStyle;

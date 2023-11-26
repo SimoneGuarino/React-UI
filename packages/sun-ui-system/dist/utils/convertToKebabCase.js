@@ -15,6 +15,10 @@ function ConvertToKebabCase({ objToTransform }) {
             }
             convertedObject[key] = convertedInnerObject;
         }
+        else if (typeof x == 'string' && x != null) {
+            const kebabCaseInnerKey = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+            convertedObject[kebabCaseInnerKey] = x;
+        }
         else {
             console.error(`Tipo inaspettato per la proprietà ${key}`);
         }

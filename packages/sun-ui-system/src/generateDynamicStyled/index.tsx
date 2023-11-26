@@ -1,5 +1,7 @@
 import React from 'react';
 import { makeStyle } from '../makeStyle';
+import { ConvertToKebabCase } from '../utils/convertToKebabCase';
+
 //import { jsx, css } from '@emotion/react'
 /**
  * @param children what is inside of tags
@@ -35,20 +37,23 @@ export const generateDynamicStyled: (
     const combinedSxStyles : React.CSSProperties = { ...sx }; // ...props.sx
 
     if (additionalStyle) {
-      const additionalStyles = additionalStyle({ ownerState: props });
+      const additionalStyles = ConvertToKebabCase({objToTransform : additionalStyle({ ownerState: props })});
       Object.assign(combinedSxStyles, additionalStyles);
     }
     if(props.sx){
       Object.assign(combinedSxStyles, props.sx);
     }
 
+    //generate random class and asign the class to useState for remember that
     const [randomClassName, setRandomClassName] = React.useState<string>(() => generateRandomClassName(name));
+    //detectChange 
     const detectChange = React.useRef<object>();
 
     //create a class when the props.sx change
+    //checks if the style element is actually different at each re-rendering
+    //if it is generate the style + save it in the useRef
     if(JSON.stringify(detectChange.current) !== JSON.stringify(combinedSxStyles)){
       detectChange.current = combinedSxStyles;
-
       makeStyle({ className: randomClassName, style: {...combinedSxStyles} });
     };
 

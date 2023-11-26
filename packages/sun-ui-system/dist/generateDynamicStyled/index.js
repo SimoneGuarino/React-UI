@@ -17,6 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateDynamicStyled = void 0;
 const react_1 = __importDefault(require("react"));
 const makeStyle_1 = require("../makeStyle");
+const convertToKebabCase_1 = require("../utils/convertToKebabCase");
 const generateRandomClassName = (name) => {
     const randomString = Math.random().toString(36).substring(2, 8);
     return `css-${randomString}-${name}`;
@@ -28,15 +29,19 @@ const generateDynamicStyled = ({ component, name, slot, sx, additionalStyle }) =
         const combinedStyles = Object.assign({}, props.style); // ...props.sx
         const combinedSxStyles = Object.assign({}, sx); // ...props.sx
         if (additionalStyle) {
-            const additionalStyles = additionalStyle({ ownerState: props });
+            const additionalStyles = (0, convertToKebabCase_1.ConvertToKebabCase)({ objToTransform: additionalStyle({ ownerState: props }) });
             Object.assign(combinedSxStyles, additionalStyles);
         }
         if (props.sx) {
             Object.assign(combinedSxStyles, props.sx);
         }
+        //generate random class and asign the class to useState for remember that
         const [randomClassName, setRandomClassName] = react_1.default.useState(() => generateRandomClassName(name));
+        //detectChange 
         const detectChange = react_1.default.useRef();
         //create a class when the props.sx change
+        //checks if the style element is actually different at each re-rendering
+        //if it is generate the style + save it in the useRef
         if (JSON.stringify(detectChange.current) !== JSON.stringify(combinedSxStyles)) {
             detectChange.current = combinedSxStyles;
             (0, makeStyle_1.makeStyle)({ className: randomClassName, style: Object.assign({}, combinedSxStyles) });
