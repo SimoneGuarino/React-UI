@@ -31,7 +31,7 @@ function App() {
         <button style={{marginBottom: '30px'}} onClick={() => setActive(!active)}>Animation: {active.toString()}</button>
 
         <Fade in={active}>
-            <Surface elevation={5} width={350} >
+            <Surface elevation={3} width={350}>
               <Group justifyContent={'space-between'}>
 
                 <Typology component={'span'} dependbyparent={"true"}>
@@ -64,12 +64,18 @@ function App() {
                         </Typology>
                       </Group>
                     </Fade>
-
                 </Group>
 
 
-
               </Group>
+            </Surface>
+            <Surface elevation={0} width={350} sx={{backgroundColor : '#fff'}}>
+              <Typology component={'p'} p={5} dependbyparent={"true"}>Lorem Ipsum è un testo segnaposto
+                utilizzato nel settore della tipografia e della stampa. Lorem Ipsum è considerato
+                il testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo tipografo
+                prese una cassetta di caratteri e li assemblò per preparare un testo campione.
+                del Lorem Ipsum.
+              </Typology>
             </Surface>
         </Fade>
 

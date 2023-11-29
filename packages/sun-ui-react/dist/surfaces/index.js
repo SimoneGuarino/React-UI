@@ -12,7 +12,6 @@ exports.Surface = (0, generateDynamicStyled_1.generateDynamicStyled)({
         color: "black",
         transition: "width 100ms linear, height 100ms linear, box-shadow 250ms ease-in-out",
         position: "relative",
-        transformStyle: "preserve-3d",
     },
     additionalStyle: ({ ownerState }) => ({
         padding: `${typeof ownerState.p == 'number' ?
@@ -21,9 +20,9 @@ exports.Surface = (0, generateDynamicStyled_1.generateDynamicStyled)({
         height: `${ownerState.height}`,
         boxShadow: `0px 0px ${ownerState.elevation}px 0px rgb(0 0 0 / 46%)`,
         zIndex: `${ownerState.elevation}`,
-        //transform: `translate3d(0px, 0px, ${ownerState.elevation * 5}px)`,
         borderRadius: `${ownerState.borderRadius}`,
-        transform: `perspective(5000px) translate(0%, 0%) translateZ(${ownerState.elevation}px)`,
+        transform: `translateZ(${ownerState.elevation * 4}px)`,
+        //transform: `perspective(5000px) translate(0%, 0%) translateZ(${ownerState.elevation}px)`,
         "&::after": {
             content: `''`,
             borderRadius: `${ownerState.borderRadius}`,
