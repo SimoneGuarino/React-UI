@@ -6,15 +6,35 @@ exports.Surface = (0, generateDynamicStyled_1.generateDynamicStyled)({
     component: 'div',
     name: 'sun-ui-surface',
     slot: 'sun-ui-surface',
-    sx: { padding: "32px",
-        backgroundColor: "hotpink",
+    sx: {
+        //backgroundColor: "hotpink",
         fontSize: "24px",
-        borderRadius: "4px",
         color: "black",
-        fontWeight: "bold",
-        transition: "width 100ms linear, height 100ms linear, box-shadow 250ms ease-in-out" },
+        transition: "width 100ms linear, height 100ms linear, box-shadow 250ms ease-in-out",
+        position: "relative",
+        transformStyle: "preserve-3d",
+    },
     additionalStyle: ({ ownerState }) => ({
-        boxShadow: `0px 0px ${ownerState.elevation * 5}px 0px rgb(0 0 0 / 46%)`,
-        transform: `translate3d(0px, 0px, ${ownerState.elevation * 5}px)`
+        padding: `${typeof ownerState.p == 'number' ?
+            (ownerState.p * 3) : ownerState.p}`,
+        width: `${ownerState.width}`,
+        height: `${ownerState.height}`,
+        boxShadow: `0px 0px ${ownerState.elevation}px 0px rgb(0 0 0 / 46%)`,
+        zIndex: `${ownerState.elevation}`,
+        //transform: `translate3d(0px, 0px, ${ownerState.elevation * 5}px)`,
+        borderRadius: `${ownerState.borderRadius}`,
+        transform: `perspective(5000px) translate(0%, 0%) translateZ(${ownerState.elevation}px)`,
+        "&::after": {
+            content: `''`,
+            borderRadius: `${ownerState.borderRadius}`,
+            bottom: "0px",
+            position: "absolute",
+            right: 0,
+            left: 0,
+            height: "100%",
+            width: '100%',
+            background: "inherit",
+            transform: "perspective(5000px) translate(0%, 0%) translateZ(1px)",
+        }
     }),
 });

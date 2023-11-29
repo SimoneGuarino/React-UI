@@ -14,11 +14,11 @@ export interface DynamicStyledComponentProps {
 }
 
 export interface DynamicStyledProps {
-  component: keyof JSX.IntrinsicElements;
+  component?: keyof JSX.IntrinsicElements;
   name: string;
   slot: string;
   sx?: React.CSSProperties;
-  additionalStyle?: (props: { ownerState: any }) => React.CSSProperties;
+  additionalStyle?: (props: { ownerState: any }) => React.CSSProperties | any;
 }
 
 const generateRandomClassName = (name: string) => {
@@ -31,9 +31,9 @@ export const generateDynamicStyled: (
   props: DynamicStyledProps
 ) => React.FC<DynamicStyledComponentProps> = ({ component, name, slot, sx, additionalStyle }) => {
   const DynamicStyledComponent: React.FC<DynamicStyledComponentProps> = ({ children, ...props }) => {
-    const CustomComponent = component as keyof JSX.IntrinsicElements;
+    const CustomComponent = component || props.component as keyof JSX.IntrinsicElements;
 
-    const combinedStyles: React.CSSProperties = { ...props.style }; // ...props.sx
+    const combinedStyles: React.CSSProperties = { ...props.style,  }; // ...props.sx
     const combinedSxStyles : React.CSSProperties = { ...sx }; // ...props.sx
 
     if (additionalStyle) {
@@ -57,6 +57,7 @@ export const generateDynamicStyled: (
       makeStyle({ className: randomClassName, style: {...combinedSxStyles} });
     };
 
+
     return React.createElement(CustomComponent, {
       name,
       slot,
@@ -64,7 +65,6 @@ export const generateDynamicStyled: (
       className: randomClassName, // Assign the random class name here
       ...props
     }, children);
-
   };
 
   return DynamicStyledComponent;

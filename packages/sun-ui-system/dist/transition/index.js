@@ -24,21 +24,22 @@ exports.EXITED = 'exited';
 const Transition = ({ transitionType, transitionStyles, additionalStyle }) => {
     const DynamicStyledComponent = (_a) => {
         var { children } = _a, props = __rest(_a, ["children"]);
-        const [currentStyle, setCurrentStyle] = react_1.default.useState({});
-        let appearStatus = react_1.default.useRef(null);
-        if (props.in) {
-            appearStatus.current = exports.ENTERING;
-        }
-        else {
-            appearStatus.current = exports.EXITING;
-        }
+        const [currentStyle, setCurrentStyle] = react_1.default.useState({ opacity: 0 });
+        let appearStatus = react_1.default.useRef(exports.UNMOUNTED);
         react_1.default.useEffect(() => {
-            updateStatus(true, appearStatus.current);
+            if (props.in) {
+                appearStatus.current = exports.ENTERING;
+                updateStatus(true, appearStatus.current);
+            }
+            else {
+                appearStatus.current = exports.EXITING;
+                updateStatus(true, appearStatus.current);
+            }
             return (() => {
                 updateStatus(false, appearStatus.current);
                 //cancelNextCallback();
             });
-        }, [appearStatus.current]);
+        }, [props.in]);
         function getTimeouts() {
             const { timeout } = props;
             let exit, enter, appear;
@@ -54,12 +55,7 @@ const Transition = ({ transitionType, transitionStyles, additionalStyle }) => {
         function updateStatus(mounting = false, nextStatus) {
             if (nextStatus !== null) {
                 // nextStatus will always be ENTERING or EXITING.
-                if (nextStatus === exports.ENTERING) {
-                    performTransition(nextStatus, mounting);
-                }
-                else {
-                    performTransition(nextStatus, mounting);
-                }
+                performTransition(nextStatus, mounting);
             }
         }
         ;
@@ -95,7 +91,11 @@ const Transition = ({ transitionType, transitionStyles, additionalStyle }) => {
             return styles[status] || {};
         }
         function goToNextState(status) {
-            if (status == exports.ENTERING) {
+            if (status == exports.UNMOUNTED) {
+                performTransition(exports.ENTERING, false);
+                return appearStatus.current = exports.ENTERING;
+            }
+            else if (status == exports.ENTERING) {
                 performTransition(exports.ENTERED, false);
                 return appearStatus.current = exports.ENTERED;
             }
@@ -103,13 +103,31 @@ const Transition = ({ transitionType, transitionStyles, additionalStyle }) => {
                 performTransition(exports.EXITED, true);
                 return appearStatus.current = exports.EXITED;
             }
-            ;
         }
         ;
-        return react_1.default.createElement("div", {
-            style: Object.assign(Object.assign({}, currentStyle), { transition: `all 100ms ${transitionType}` }),
-            //...props
-        }, children);
+        /**
+         * function that take all styles and marge in one const
+         * @param child in input the childs of the component
+         * @returns
+         */
+        const modifyChildrenStyles = (child) => {
+            // Estrai lo stile corrente dal figlio, o usa un oggetto vuoto se non c'è uno stile
+            const childStyle = Object.assign(Object.assign({}, child.props.style), currentStyle) || {};
+            // Aggiungi il nuovo stile a tutte le props di style dei figli
+            const updatedStyle = Object.assign(Object.assign({}, childStyle), { transition: `all 100ms ${transitionType}`, transformStyle: "preserve-3d" });
+            // Clona l'elemento figlio con lo stile aggiornato
+            return react_1.default.cloneElement(child, {
+                style: updatedStyle,
+            });
+        };
+        // edit and apply that marged Style on all child component
+        const modifiedChildren = react_1.default.Children.map(children, (child) => {
+            if (react_1.default.isValidElement(child)) {
+                return modifyChildrenStyles(child);
+            }
+            return child;
+        });
+        return modifiedChildren;
     };
     return DynamicStyledComponent;
 };

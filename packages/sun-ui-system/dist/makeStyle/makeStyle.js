@@ -34,8 +34,27 @@ const composeStyle = ({ style, className, styleSheet }) => {
     }
     // Convert React styles to a valid style string
     const styleToString = Object.keys(style).filter(e => e[0] !== '&' && e[1] !== ':')
-        .map((key) => `${stack[key]}: ${style[key]};`)
+        .map((key) => {
+        const e = style[key];
+        const numberRegex = /^[0-9]+$/;
+        //don't include the css undefined line.
+        if (typeof e == 'string') {
+            if (!e.includes('undefined')) {
+                if (e.match(numberRegex)) {
+                    return `${stack[key]}: ${e}px;`;
+                }
+                else {
+                    return `${stack[key]}: ${e};`;
+                }
+                ;
+            }
+            ;
+        }
+        else
+            return `${stack[key]}: ${e};`;
+    })
         .join(' ');
+    //console.log(styleToString)
     return styleToString;
 };
 exports.composeStyle = composeStyle;

@@ -15,7 +15,7 @@ function ConvertToKebabCase({ objToTransform }) {
             }
             convertedObject[key] = convertedInnerObject;
         }
-        else if (typeof x == 'string' && x != null) {
+        else if ((typeof x == 'string' || typeof x == 'number') && x != null) {
             const kebabCaseInnerKey = key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
             convertedObject[kebabCaseInnerKey] = x;
         }

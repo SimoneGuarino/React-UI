@@ -9,12 +9,12 @@ export interface DynamicStyledComponentProps {
     [key: string]: any;
 }
 export interface DynamicStyledProps {
-    component: keyof JSX.IntrinsicElements;
+    component?: keyof JSX.IntrinsicElements;
     name: string;
     slot: string;
     sx?: React.CSSProperties;
     additionalStyle?: (props: {
         ownerState: any;
-    }) => React.CSSProperties;
+    }) => React.CSSProperties | any;
 }
 export declare const generateDynamicStyled: (props: DynamicStyledProps) => React.FC<DynamicStyledComponentProps>;

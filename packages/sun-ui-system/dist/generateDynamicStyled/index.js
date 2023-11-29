@@ -25,7 +25,7 @@ const generateRandomClassName = (name) => {
 const generateDynamicStyled = ({ component, name, slot, sx, additionalStyle }) => {
     const DynamicStyledComponent = (_a) => {
         var { children } = _a, props = __rest(_a, ["children"]);
-        const CustomComponent = component;
+        const CustomComponent = component || props.component;
         const combinedStyles = Object.assign({}, props.style); // ...props.sx
         const combinedSxStyles = Object.assign({}, sx); // ...props.sx
         if (additionalStyle) {
