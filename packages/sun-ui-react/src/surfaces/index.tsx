@@ -20,6 +20,7 @@ export const Surface = generateDynamicStyled({
     zIndex: `${ownerState.elevation}`,
     borderRadius: `${ownerState.borderRadius}`,
     transform: `translateZ(${ownerState.elevation * 4}px)`,
+    transformStyle: "preserve-3d",
     //transform: `perspective(5000px) translate(0%, 0%) translateZ(${ownerState.elevation}px)`,
     "&::after": {
       content: `''`,

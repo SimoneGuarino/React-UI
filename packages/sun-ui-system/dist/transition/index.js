@@ -27,28 +27,39 @@ const Transition = ({ transitionType, transitionStyles, additionalStyle }) => {
         const [currentStyle, setCurrentStyle] = react_1.default.useState({ opacity: 0 });
         let appearStatus = react_1.default.useRef(exports.UNMOUNTED);
         react_1.default.useEffect(() => {
+            //check if the component is unmounted or not
+            //if is unmounted stay start with Exited status { opacity : 0}
             if (props.in) {
                 appearStatus.current = exports.ENTERING;
-                updateStatus(true, appearStatus.current);
+                updateStatus(false, appearStatus.current);
+            }
+            else if (!props.in && appearStatus.current === exports.UNMOUNTED) {
+                appearStatus.current = exports.EXITED;
+                updateStatus(false, appearStatus.current);
             }
             else {
                 appearStatus.current = exports.EXITING;
                 updateStatus(true, appearStatus.current);
             }
             return (() => {
-                updateStatus(false, appearStatus.current);
-                //cancelNextCallback();
+                appearStatus.current = exports.UNMOUNTED;
+                updateStatus(false, exports.EXITED);
+                // TODO: cancelNextCallback();
             });
         }, [props.in]);
         function getTimeouts() {
-            const { timeout } = props;
+            const { timeout, timeEnter, timeExit } = props;
             let exit, enter, appear;
-            exit = enter = appear = timeout || 0;
-            if (timeout != null && typeof timeout !== 'number') {
-                exit = timeout.exit;
-                enter = timeout.enter;
-                // TODO: remove fallback for next major
-                appear = timeout.appear !== undefined ? timeout.appear : enter;
+            //exit = enter = appear = timeout || 0;
+            const time = {
+                exit: timeout || 0,
+                enter: timeout || 0,
+                appear: timeout || 0,
+            };
+            if (timeout != null && typeof timeout === 'number' || timeEnter != null || timeExit != null) {
+                exit = timeExit ? timeExit : time.exit;
+                enter = timeEnter ? timeEnter : time.enter;
+                appear = timeout !== undefined ? time.appear : enter;
             }
             return { exit, enter, appear };
         }
@@ -61,7 +72,9 @@ const Transition = ({ transitionType, transitionStyles, additionalStyle }) => {
         ;
         function performTransition(status, mounting) {
             const timeouts = getTimeouts();
-            const enterTimeout = mounting ? timeouts.appear : timeouts.enter;
+            //const enterTimeout = !mounting ? timeouts.exit : timeouts.enter;
+            const enterTimeout = status == exports.EXITING || status == exports.EXITED ?
+                timeouts.exit : timeouts.enter;
             let startTime = null;
             function animate(time) {
                 let condition;
@@ -70,7 +83,7 @@ const Transition = ({ transitionType, transitionStyles, additionalStyle }) => {
                 }
                 //define the progress Time, if enterTimeout is undefined give 100ms (0.1s) delay
                 //for perform the animation
-                const progress = (time - startTime) / (enterTimeout !== 0 ? enterTimeout : 100);
+                const progress = (time - startTime) / (enterTimeout ? enterTimeout : 100);
                 if (progress < 1) {
                     // Calcola gli stili in base al progresso e richiedi il prossimo frame
                     condition = calculateTransitionStyles(transitionStyles, status);
@@ -91,16 +104,12 @@ const Transition = ({ transitionType, transitionStyles, additionalStyle }) => {
             return styles[status] || {};
         }
         function goToNextState(status) {
-            if (status == exports.UNMOUNTED) {
-                performTransition(exports.ENTERING, false);
-                return appearStatus.current = exports.ENTERING;
-            }
-            else if (status == exports.ENTERING) {
-                performTransition(exports.ENTERED, false);
+            if (status == exports.ENTERING) {
+                performTransition(exports.ENTERED, true);
                 return appearStatus.current = exports.ENTERED;
             }
             else if (status == exports.EXITING) {
-                performTransition(exports.EXITED, true);
+                performTransition(exports.EXITED, false);
                 return appearStatus.current = exports.EXITED;
             }
         }
