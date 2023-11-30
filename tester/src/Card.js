@@ -6,9 +6,13 @@ import avatar from './no-image.webp';
 export function Card() {
     const [active, setActive] = React.useState(true);
     const [expand, setExpand] = React.useState(false);
+    const [shape, setShape] = React.useState(true);
+
 
     return <>
         <button style={{ marginBottom: '30px' }} onClick={() => setActive(!active)}>Animation: {active.toString()}</button>
+        <button style={{ marginBottom: '30px' }} onClick={() => setShape(!shape)}>Shape: {shape.toString()}</button>
+
         <Fade in={active}>
             <Surface elevation={3} width={350}>
                 <Group justifyContent={'space-between'}>
@@ -49,13 +53,15 @@ export function Card() {
                 </Group>
             </Surface>
 
-            <Surface elevation={0} width={350} sx={{ backgroundColor: '#fff' }}>
-                <Typology component={'p'} p={5} dependbyparent={"true"}>Lorem Ipsum è un testo segnaposto
-                    utilizzato nel settore della tipografia e della stampa. Lorem Ipsum è considerato
-                    il testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo tipografo
-                    prese una cassetta di caratteri e li assemblò per preparare un testo campione.
-                    del Lorem Ipsum.
-                </Typology>
+            <Surface elevation={0} width={350} sx={{}}>
+                <Group width={350} height={350} backgroundColor={'#fff'} >
+                    <Typology component={'p'} p={5} dependbyparent={"true"}>Lorem Ipsum è un testo segnaposto
+                        utilizzato nel settore della tipografia e della stampa. Lorem Ipsum è considerato
+                        il testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo tipografo
+                        prese una cassetta di caratteri e li assemblò per preparare un testo campione.
+                        del Lorem Ipsum.
+                    </Typology>
+                </Group>
             </Surface>
         </Fade>
     </>
